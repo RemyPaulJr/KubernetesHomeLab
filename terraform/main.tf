@@ -55,8 +55,8 @@ resource "proxmox_virtual_environment_vm" "k3s-master" {
 
     ip_config {
       ipv4 {
-        address = master_ip
-        gateway = gateway_ip
+        address = var.master_ip
+        gateway = var.gateway_ip
       }
     }
   }
@@ -104,7 +104,7 @@ resource "proxmox_virtual_environment_vm" "k3s-worker" {
     ip_config {
       ipv4 {
         address = "${var.worker_ips[count.index]}"
-        gateway = gateway_ip
+        gateway = var.gateway_ip
       }
     }
   }
