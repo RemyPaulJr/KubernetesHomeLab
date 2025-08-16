@@ -1,0 +1,12 @@
+- hosts: master:workers
+  become: yes
+  tasks:
+    - name: sudo apt update
+      apt:
+        update_cache: yes
+
+    - name: sudo apt upgrade -y
+      apt:
+        upgrade: dist
+        autoremove: yes
+        autoclean: yes

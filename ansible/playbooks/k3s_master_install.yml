@@ -1,0 +1,26 @@
+- hosts: master
+  tasks:
+    - name: get k3s install script
+      become: true
+      ansible.builtin.get_url:
+        url: https://get.k3s.io # official k3s install quick start
+        dest: /tmp/k3s_install.sh # store the install script in a temp directory with the name k3s_install.sh for ease of recognition
+        mode: '0755' # r/w perm for owner and r/e for others
+    
+    - name: install k3s
+      become: true
+      ansible.builtin.shell: /tmp/k3s_install.sh # runs my install script 
+      when: ansible_facts['files']['usr/local/bin/k3s'] is not defined # checks the ansible facts 'files' for the path i specified. if that path exists then k3s is already installed
+  
+    - name: get k3s node token
+      become: true
+      slurp:  # slurp reads a file from a remote host (my VM) and returns its content
+        src: /var/lib/rancher/k3s/server/node-token
+      register: master_token  # stores the output (token) in this variable
+
+    - name: save token to a temp file on my local machine
+      copy:  # copy copies from VM to my machine
+        content: "{{ master_token['content'] | b64decode }}"  # the base64-encoded content returned by slurp. 'content' is the token portion we need. b64decode decodes this encoded file
+        dest: /home/remy/k3s/k3s_token  # path on my local machine to store the token
+      delegate_to: localhost
+      run_once: true  # in case I add more master vms in the future this will run once for each node

@@ -1,0 +1,9 @@
+- hosts: workers
+  become: true
+  vars: 
+    k3s_token: "{{lookup('file', '/home/remy/k3s/k3s_token') | trim }}"
+  tasks:
+    - name: Install k3s and join master cluster
+      ansible.builtin.shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['k3s-master'].ansible_host }}:6443 \
+        K3S_TOKEN={{ k3s_token }} sh -
