@@ -6,13 +6,16 @@ metadata:
 spec:
   project: default # The Argo CD project this application belongs to
   source:
-    repoURL: https://prometheus-community.github.io/helm-charts # Official Helm chart repo
-    targetRevision: 76.4.0
-    chart: kube-prometheus-stack
+    repoURL: https://github.com/RemyPaulJr/KubernetesHomeLab.git # Git repository URL containing the application manifests
+    targetRevision: master 
+    path: k8s/apps/monitoring # Path to the directory in the Git repository containing the Argo CD application manifest
     helm:
       releaseName: kube-prometheus-stack
       valueFiles:
-        - https://raw.githubusercontent.com/RemyPaulJr/KubernetesHomeLab/master/k8s/apps/monitoring/values.yaml # Path to custom values file in my git repository
+        - values.yaml # Path to custom values file in my git repository
+      repoURL: https://prometheus-community.github.io/helm-charts # Official Helm chart repo
+      targetRevision: 76.4.0
+      chart: kube-prometheus-stack
   destination:
     server: https://kubernetes.default.svc # The target Kubernetes cluster API server URL
     namespace: monitoring # The namespace where resources will be deployed
