@@ -7,7 +7,7 @@ spec:
   project: default # The Argo CD project this application belongs to
   source:
     repoURL: https://github.com/RemyPaulJr/KubernetesHomeLab.git # Git repository URL containing the application manifests
-    targetRevision: master 
+    targetRevision: master
     path: k8s/apps/monitoring # Path to the directory in the Git repository containing the Argo CD application manifest
     helm:
       releaseName: kube-prometheus-stack
