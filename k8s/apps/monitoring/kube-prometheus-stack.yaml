@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd # namespace where Argo CD is installed
+spec:
+  project: default # The Argo CD project this application belongs to
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts # Official Helm chart repo
+    targetRevision: 76.4.0
+    chart: kube-prometheus-stack
+    helm:
+      releaseName: kube-prometheus-stack
+      valueFiles:
+        - https://raw.githubusercontent.com/RemyPaulJr/KubernetesHomeLab/master/k8s/apps/monitoring/values.yaml # Path to custom values file in my git repository
+  destination:
+    server: https://kubernetes.default.svc # The target Kubernetes cluster API server URL
+    namespace: monitoring # The namespace where resources will be deployed
+  syncPolicy:
+    automated:
+      prune: true # Automatically prune resources that are no longer in Git
+      selfHeal: true # Automatically sync if there is a drift from Git

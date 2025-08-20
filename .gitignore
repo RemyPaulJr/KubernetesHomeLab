@@ -9,4 +9,4 @@ override.tf.json
 crash.log
 
 # Ansible files to ignore
-group_vars/
+group_vars/ 
