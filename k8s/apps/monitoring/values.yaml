@@ -1,5 +1,2 @@
 grafana:
-  adminPassword: "admin"
-prometheus:
-  prometheusSpec:
-    retention: 7d
+  adminPassword: "password"
